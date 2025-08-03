@@ -15,6 +15,18 @@ func check(e error) {
 	}
 }
 
+func byteCount(fileName []string) int64 {
+
+	file, err := os.Open(strings.Join(fileName, ""))
+	check(err)
+
+	fileData, err := file.Stat()
+	check(err)
+
+	return fileData.Size()
+
+}
+
 func lineCount(fileName string) int {
 	count := 0
 	separator := []byte{'\n'}
@@ -62,18 +74,14 @@ func main() {
 	charsPtr := flag.Bool("m", false, "Prints the number of characters in a file")
 	flag.Parse()
 
-	fileArg := os.Args[2:]
+	fileArg := flag.Args()
 
 	if len(fileArg) > 0 {
 		if *bytesPtr {
 
-			file, err := os.Open(strings.Join(fileArg, ""))
-			check(err)
+			bytesCount := byteCount(fileArg)
 
-			fileData, err := file.Stat()
-			check(err)
-
-			fmt.Printf("%d %s\n", fileData.Size(), fileData.Name())
+			fmt.Printf("%d %s\n", bytesCount, strings.Join(fileArg, ""))
 
 		} else if *linesPtr {
 
@@ -90,7 +98,14 @@ func main() {
 			count := charCount(strings.Join(fileArg, ""))
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 
-		}
-	}
+		} else {
 
+			bytesCount := byteCount(fileArg)
+			linesCount := lineCount(strings.Join(fileArg, ""))
+			wordCount := wordCount(strings.Join(fileArg, ""))
+
+			fmt.Printf("%d\t%d\t%d %s\n", linesCount, wordCount, bytesCount, strings.Join(fileArg, ""))
+		}
+
+	}
 }
