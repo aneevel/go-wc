@@ -27,10 +27,22 @@ func lineCount(fileName string) int {
 
 }
 
+func wordCount(fileName string) int {
+	count := 0
+
+	data, err := os.ReadFile(fileName)
+	check(err)
+
+	count += len(bytes.Runes(data))
+
+	return count
+}
+
 func main() {
 
 	bytesPtr := flag.Bool("c", false, "Prints the byte count")
 	linesPtr := flag.Bool("l", false, "Prints the number of lines in a file")
+	wordsPtr := flag.Bool("w", false, "Prints the number of words in a file")
 	flag.Parse()
 
 	fileArg := os.Args[2:]
@@ -48,6 +60,10 @@ func main() {
 		} else if *linesPtr {
 
 			count := lineCount(strings.Join(fileArg, ""))
+			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
+		} else if *wordsPtr {
+
+			count := wordCount(strings.Join(fileArg, ""))
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 		}
 	}

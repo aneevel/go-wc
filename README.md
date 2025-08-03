@@ -8,4 +8,5 @@ Includes a test file.
 
 # Features 
 
-- Byte Count Flag - Default option, simply provide -c to get the byte count of the provided file
+- Byte Count Flag - Default option, simply provide -c to get the byte count of a file
+- Line Count Flag - provide -l to get the number of lines in a file
