@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"flag"
 	"fmt"
@@ -27,6 +28,21 @@ func lineCount(fileName string) int {
 
 }
 
+func wordCount(fileName string) int {
+	count := 0
+
+	file, _ := os.Open(fileName)
+	scanner := bufio.NewScanner(file)
+
+	scanner.Split(bufio.ScanWords)
+
+	for scanner.Scan() {
+		count++
+	}
+
+	return count
+}
+
 func charCount(fileName string) int {
 	count := 0
 
@@ -42,6 +58,7 @@ func main() {
 
 	bytesPtr := flag.Bool("c", false, "Prints the byte count")
 	linesPtr := flag.Bool("l", false, "Prints the number of lines in a file")
+	wordsPtr := flag.Bool("w", false, "Prints the number of words in a file")
 	charsPtr := flag.Bool("m", false, "Prints the number of characters in a file")
 	flag.Parse()
 
@@ -57,14 +74,22 @@ func main() {
 			check(err)
 
 			fmt.Printf("%d %s\n", fileData.Size(), fileData.Name())
+
 		} else if *linesPtr {
 
 			count := lineCount(strings.Join(fileArg, ""))
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
+
+		} else if *wordsPtr {
+
+			count := wordCount((strings.Join(fileArg, "")))
+			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
+
 		} else if *charsPtr {
 
 			count := charCount(strings.Join(fileArg, ""))
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
+
 		}
 	}
 
