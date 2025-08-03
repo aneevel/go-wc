@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"os"
@@ -13,14 +14,30 @@ func check(e error) {
 	}
 }
 
+func lineCount(fileName string) int {
+	count := 0
+	separator := []byte{'\n'}
+
+	data, err := os.ReadFile(fileName)
+	check(err)
+
+	count += bytes.Count(data, separator)
+
+	return count
+
+}
+
 func main() {
 
-	bytesPtr := flag.Bool("c", true, "Prints the byte count")
+	bytesPtr := flag.Bool("c", false, "Prints the byte count")
+	linesPtr := flag.Bool("l", false, "Prints the number of lines in a file")
 	flag.Parse()
 
-	fileArg := os.Args[1:]
+	fileArg := os.Args[2:]
+
 	if len(fileArg) > 0 {
 		if *bytesPtr {
+
 			file, err := os.Open(strings.Join(fileArg, ""))
 			check(err)
 
@@ -28,6 +45,10 @@ func main() {
 			check(err)
 
 			fmt.Printf("%d %s\n", fileData.Size(), fileData.Name())
+		} else if *linesPtr {
+
+			count := lineCount(strings.Join(fileArg, ""))
+			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 		}
 	}
 
