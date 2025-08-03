@@ -1,12 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
 )
 
 func main() {
-	argsWithoutProg := os.Args[1:]
 
-	fmt.Println(argsWithoutProg)
+	bytesPtr := flag.Bool("c", true, "Prints the byte count")
+
+	flag.Parse()
+
+	fmt.Println("bytesPtr:", *bytesPtr)
 }
