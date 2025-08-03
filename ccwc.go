@@ -42,7 +42,7 @@ func main() {
 
 	bytesPtr := flag.Bool("c", false, "Prints the byte count")
 	linesPtr := flag.Bool("l", false, "Prints the number of lines in a file")
-	charsPtr := flag.Bool("w", false, "Prints the number of characters in a file")
+	charsPtr := flag.Bool("m", false, "Prints the number of characters in a file")
 	flag.Parse()
 
 	fileArg := os.Args[2:]

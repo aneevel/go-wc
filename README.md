@@ -11,3 +11,4 @@ Includes a test file.
 - Byte Count Flag - Default option, simply provide -c to get the byte count of a file
 - Line Count Flag - provide -l to get the number of lines in a file
 - Word Count Flag - provide -w to get the number of words in a file
+- Character Count Flag - provide -m to get the number of chars in a file
