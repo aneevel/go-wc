@@ -15,10 +15,7 @@ func check(e error) {
 	}
 }
 
-func byteCount(fileName []string) int64 {
-
-	file, err := os.Open(strings.Join(fileName, ""))
-	check(err)
+func byteCount(file *os.File) int64 {
 
 	fileData, err := file.Stat()
 	check(err)
@@ -76,13 +73,16 @@ func main() {
 
 	fileArg := flag.Args()
 
+	// If given args, file handle is the arg
 	if len(fileArg) > 0 {
-		if *bytesPtr {
 
-			bytesCount := byteCount(fileArg)
+		fileHandle, err := os.Open(strings.Join(fileArg, ""))
+		check(err)
+
+		if *bytesPtr {
+			bytesCount := byteCount(fileHandle)
 
 			fmt.Printf("%d %s\n", bytesCount, strings.Join(fileArg, ""))
-
 		} else if *linesPtr {
 
 			count := lineCount(strings.Join(fileArg, ""))
@@ -100,12 +100,11 @@ func main() {
 
 		} else {
 
-			bytesCount := byteCount(fileArg)
+			bytesCount := byteCount(fileHandle)
 			linesCount := lineCount(strings.Join(fileArg, ""))
 			wordCount := wordCount(strings.Join(fileArg, ""))
 
 			fmt.Printf("%d\t%d\t%d %s\n", linesCount, wordCount, bytesCount, strings.Join(fileArg, ""))
 		}
-
 	}
 }
