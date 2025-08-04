@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -24,11 +25,11 @@ func byteCount(file *os.File) int64 {
 
 }
 
-func lineCount(fileName string) int {
+func lineCount(file *os.File) int {
 	count := 0
 	separator := []byte{'\n'}
 
-	data, err := os.ReadFile(fileName)
+	data, err := io.ReadAll(file)
 	check(err)
 
 	count += bytes.Count(data, separator)
@@ -85,7 +86,7 @@ func main() {
 			fmt.Printf("%d %s\n", bytesCount, strings.Join(fileArg, ""))
 		} else if *linesPtr {
 
-			count := lineCount(strings.Join(fileArg, ""))
+			count := lineCount(fileHandle)
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 
 		} else if *wordsPtr {
@@ -101,7 +102,7 @@ func main() {
 		} else {
 
 			bytesCount := byteCount(fileHandle)
-			linesCount := lineCount(strings.Join(fileArg, ""))
+			linesCount := lineCount(fileHandle)
 			wordCount := wordCount(strings.Join(fileArg, ""))
 
 			fmt.Printf("%d\t%d\t%d %s\n", linesCount, wordCount, bytesCount, strings.Join(fileArg, ""))
