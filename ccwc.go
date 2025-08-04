@@ -38,10 +38,9 @@ func lineCount(file *os.File) int {
 
 }
 
-func wordCount(fileName string) int {
+func wordCount(file *os.File) int {
 	count := 0
 
-	file, _ := os.Open(fileName)
 	scanner := bufio.NewScanner(file)
 
 	scanner.Split(bufio.ScanWords)
@@ -53,10 +52,10 @@ func wordCount(fileName string) int {
 	return count
 }
 
-func charCount(fileName string) int {
+func charCount(file *os.File) int {
 	count := 0
 
-	data, err := os.ReadFile(fileName)
+	data, err := io.ReadAll(file)
 	check(err)
 
 	count += len(bytes.Runes(data))
@@ -91,19 +90,19 @@ func main() {
 
 		} else if *wordsPtr {
 
-			count := wordCount((strings.Join(fileArg, "")))
+			count := wordCount(fileHandle)
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 
 		} else if *charsPtr {
 
-			count := charCount(strings.Join(fileArg, ""))
+			count := charCount(fileHandle)
 			fmt.Printf("%d %s\n", count, strings.Join(fileArg, ""))
 
 		} else {
 
 			bytesCount := byteCount(fileHandle)
 			linesCount := lineCount(fileHandle)
-			wordCount := wordCount(strings.Join(fileArg, ""))
+			wordCount := wordCount(fileHandle)
 
 			fmt.Printf("%d\t%d\t%d %s\n", linesCount, wordCount, bytesCount, strings.Join(fileArg, ""))
 		}
