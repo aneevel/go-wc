@@ -197,6 +197,7 @@ func main() {
 			wordCount := wordCount(wordFileHandle)
 			_ = wordFileHandle.Close()
 
+			// Lets avoid leaving a bunch of artifacts
 			_ = os.Remove("lineFile.txt")
 			_ = os.Remove("byteFile.txt")
 			_ = os.Remove("wordFile.txt")
